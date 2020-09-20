@@ -2,7 +2,7 @@ package tasks;
 
 import java.util.function.DoubleUnaryOperator;
 
-public class ThreadCalculator extends Thread implements Calculator {
+public class ThreadCalculator implements Calculator, Runnable {
 
     private IntegralCalculator calculator;
     private final Task1 main;
