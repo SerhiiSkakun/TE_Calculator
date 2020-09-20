@@ -27,7 +27,7 @@ public class Task1 {
             while (finished < nTreads){
                 try {
                     wait();
-                } catch (InterruptedException e) { }
+                } catch (InterruptedException ignored) { }
             }
         }
         long finishTime = System.currentTimeMillis();
