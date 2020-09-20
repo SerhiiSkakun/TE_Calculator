@@ -1,8 +1,12 @@
 package tasks;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
 public class Task1 {
     private double total;
-    private int finished;
 
     public static void main(String[] args) {
         new Task1().run();
@@ -17,31 +21,30 @@ public class Task1 {
         long startTime = System.currentTimeMillis();
 
         total = 0;
-        finished = 0;
         double delta = (b - a) / nTreads;
+        List<FutureTask> tasks = new ArrayList<>();
         for (int i = 0; i < nTreads; i++) {
-            new Thread(new ThreadCalculator(a + i * delta, a + (i + 1) * delta, n/nTreads, Math::sin, this)).start();
+            FutureTask<Double> task = new FutureTask(new ThreadCalculator(a + i * delta, a + (i + 1) * delta, n/nTreads, Math::sin, this));
+            tasks.add(task);
+            new Thread(task).start();
         }
 
-        synchronized (this) {
-            while (finished < nTreads){
-                try {
-                    wait();
-                } catch (InterruptedException ignored) { }
+        for (FutureTask task : tasks) {
+            try {
+                total += (double)task.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
         }
+
         long finishTime = System.currentTimeMillis();
 
         System.out.println("total = " + total);
         System.out.println(finishTime - startTime);
-//        IntegralCalculator integralCalculator = new IntegralCalculator(a,b,n,Math::sin);
-//        double v = integralCalculator.calculate();
-//        System.out.println("v = " + v);
-    }
-
-    synchronized void sentResult(double result){
-        total += result;
-        finished++;
-        notify();
+////        IntegralCalculator integralCalculator = new IntegralCalculator(a,b,n,Math::sin);
+////        double v = integralCalculator.calculate();
+////        System.out.println("v = " + v);
     }
 }

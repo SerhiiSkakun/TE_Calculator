@@ -1,8 +1,9 @@
 package tasks;
 
+import java.util.concurrent.Callable;
 import java.util.function.DoubleUnaryOperator;
 
-public class ThreadCalculator implements Calculator, Runnable {
+public class ThreadCalculator implements Calculator, Callable<Double> {
 
     private IntegralCalculator calculator;
     private final Task1 main;
@@ -17,8 +18,13 @@ public class ThreadCalculator implements Calculator, Runnable {
         return calculator.calculate();
     }
 
-    public void run(){
-        double result = calculate();
-        main.sentResult(result);
+//    public void run(){
+//        double result = calculate();
+//        main.sentResult(result);
+//    }
+
+    @Override
+    public Double call() throws Exception {
+        return calculate();
     }
 }
