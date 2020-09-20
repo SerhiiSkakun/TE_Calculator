@@ -20,7 +20,7 @@ public class Task1 {
         finished = 0;
         double delta = (b - a) / nTreads;
         for (int i = 0; i < nTreads; i++) {
-            new Thread(new ThreadCalculator(a + i *delta, a + (i + 1) * delta, n/nTreads, Math::sin, this)).start();
+            new Thread(new ThreadCalculator(a + i * delta, a + (i + 1) * delta, n/nTreads, Math::sin, this)).start();
         }
 
         synchronized (this) {
