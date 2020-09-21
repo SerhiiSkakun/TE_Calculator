@@ -24,7 +24,8 @@ public class Task1 {
         double delta = (b - a) / nTreads;
         List<FutureTask> tasks = new ArrayList<>();
         for (int i = 0; i < nTreads; i++) {
-            FutureTask<Double> task = new FutureTask(new ThreadCalculator(a + i * delta, a + (i + 1) * delta, n/nTreads, Math::sin, this));
+            FutureTask<Double> task = new FutureTask(
+                    new ThreadCalculator(a + i * delta, a + (i + 1) * delta, n/nTreads, Math::sin));
             tasks.add(task);
             new Thread(task).start();
         }

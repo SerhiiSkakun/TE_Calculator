@@ -6,11 +6,9 @@ import java.util.function.DoubleUnaryOperator;
 public class ThreadCalculator implements Calculator, Callable<Double> {
 
     private IntegralCalculator calculator;
-    private final Task1 main;
 
-    public ThreadCalculator(double start, double finish, int n, DoubleUnaryOperator f, Task1 main) {
+    public ThreadCalculator(double start, double finish, int n, DoubleUnaryOperator f) {
         calculator = new IntegralCalculator(start,finish,n,f);
-        this.main = main;
     }
 
     @Override
@@ -18,13 +16,8 @@ public class ThreadCalculator implements Calculator, Callable<Double> {
         return calculator.calculate();
     }
 
-//    public void run(){
-//        double result = calculate();
-//        main.sentResult(result);
-//    }
-
     @Override
-    public Double call() throws Exception {
+    public Double call() {
         return calculate();
     }
 }
